@@ -41,8 +41,8 @@ namespace TileMaker
             {
                 LB_ImagePath.Text = string.Format("{0} ({1}x{2}, {3})", ofd.FileName, PB_Image.Image.Width, PB_Image.Image.Height, PB_Image.Image.PixelFormat.ToString());
                 Size NewDimensions = PB_Image.Image.Size;
-                NewDimensions.Height = Misc.GetNextPowerOf2(NewDimensions.Height);
-                NewDimensions.Width = Misc.GetNextPowerOf2(NewDimensions.Width);
+                NewDimensions.Height = Misc.GetNextDividibleBy512(NewDimensions.Height);
+                NewDimensions.Width = Misc.GetNextDividibleBy512(NewDimensions.Width);
                 LB_ImageInfo.Text = string.Format("Cropped dimensions: {0}x{1}", NewDimensions.Width, NewDimensions.Height);
                 LB_ImageInfo.Visible = true;
             };
@@ -63,12 +63,12 @@ namespace TileMaker
                 PointF TopLeft = new PointF(float.Parse(TB_West.Text), float.Parse(TB_North.Text));
                 PointF BottomRight = new PointF(float.Parse(TB_East.Text), float.Parse(TB_South.Text));
                 SatelliteImage img = new SatelliteImage(TopLeft, BottomRight, PB_Image.Image, Earth);
-                Tile TileUpperLeft = img.GetUpperLeftTile(img.CalculateBestLevel());
+                Tile TileUpperLeft = img.GetUpperLeftTile();
 
 
-                LB_ImageInfo.Text = string.Format("Cropped dimensions: {0}x{1} | Vertical Span: {2} | North Span: {3} | South Span: {4}\nFirst tile: {5}", img.CroppedRectangle.Width, img.CroppedRectangle.Height,
+                LB_ImageInfo.Text = string.Format("Vertical Span: {0} | North Span: {1} | South Span: {2}\nFirst tile: {3} | Cropped Image: X{4} Y{5} - {6}x{7}",
                     Misc.FormatBest(img.Span.VerticalSpan, "0.00", "m"), Misc.FormatBest(img.Span.NorthSpan, "0.00", "m"), Misc.FormatBest(img.Span.SouthSpan, "0.00", "m"),
-                    TileUpperLeft);
+                    TileUpperLeft, img.CroppedRectangle.X, img.CroppedRectangle.Y, img.CroppedRectangle.Width, img.CroppedRectangle.Height);
             }
             catch (Exception ex)
             {

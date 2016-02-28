@@ -130,8 +130,8 @@ namespace TileMaker
 
         public static Tile GetUnderlyingTile(int Level, PointF point)
         {
-            int TileX = (int)Math.Floor(point.X * (Math.Pow(2, 11 + Level)));
-            int TileY = (int)Math.Floor(point.Y * (Math.Pow(2, 10 + Level)));
+            int TileX = (int)Math.Floor(point.X * (Math.Pow(2, 11 + Level) / 180.0));
+            int TileY = (int)Math.Floor(point.Y * (Math.Pow(2, 10 + Level) / 90.0 ));
 
             return new Tile(new Point(TileX, TileY), Level);
         }
